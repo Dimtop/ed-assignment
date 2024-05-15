@@ -30,7 +30,7 @@ export class AboutComponent implements OnInit {
       .getVersion('frontend')
       .pipe(
         tap((response: any) => {
-          this.frontVersion = response.bdy.frontend;
+          this.frontVersion = response.body.frontend;
         })
       )
       .subscribe();
