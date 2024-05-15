@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dterz.dtos.AccountDTO;
+import com.dterz.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final accountService accountService;
+    private final AccountService accountService;
 
     /**
      * Gets an Acount by its id
