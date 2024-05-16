@@ -1,9 +1,9 @@
 # Accounting System
 
 A Sandbox project that has the goal to assess the development skills of a Web Developer candidate by completing
-exercises. The Web Application is a small scale Accounting System to manage Accounts of Users and their transactions. 
-On the home screen the user is presented with his transactions, and his accounts. The Application allows searching for 
-transactions as well as adding new ones. The application allows adding new Accounts and Users as well. 
+exercises. The Web Application is a small scale Accounting System to manage Accounts of Users and their transactions.
+On the home screen the user is presented with his transactions, and his accounts. The Application allows searching for
+transactions as well as adding new ones. The application allows adding new Accounts and Users as well.
 
 To complete the exercises the candidate requires some knowledge in Java, HTML, Typescript/Javascript and SQL.
 
@@ -15,7 +15,7 @@ the exercises that follow. Each exercise awards a different amount of points tot
 The use of any IDE and/or editor to edit the source code is allowed. It is totally acceptable, for the candidate to get
 help and information he/she needs from the internet. However, it is not acceptable to ask for another person's help.
 
-Nevertheless, the candidate is encouraged to contact the assessor for any questions or problems during installation might occur 
+Nevertheless, the candidate is encouraged to contact the assessor for any questions or problems during installation might occur
 and also in case an exercise description is not clear enough.
 
 The assessor will provide contact information to the candidate.
@@ -92,10 +92,12 @@ candidate should identify and fix issues with this function regarding code style
 each successful improvement the candidate gets awarded with points up to the maximum for this Exercise.
 
 ### Exercise 4 (10 points)
+
 At the moment there are some Tests implemented for the Java code. In class `UserControllerTests` only a skeleton remains
 for the tests remain. To complete this exercise the candidate needs to complete the missing JUnit test.
 
 ### Exercise 5 (30 points)
+
 At the moment Users are unable to register their Age. For this exercise add an age Attribute to the users. To complete
 this task the candidate should implement all the necessary changes in the frontend, the backend and the database.
 

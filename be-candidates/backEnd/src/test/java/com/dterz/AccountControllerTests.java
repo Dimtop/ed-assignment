@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class AccountControllerTests extends BaseTests {
 
-
     @Test
     public void checkIfAccessRestricted() throws Exception {
         when(accountRepository.findById(1L)).thenReturn(Optional.of(new Account()));
@@ -40,7 +39,7 @@ public class AccountControllerTests extends BaseTests {
     public void testGetById() throws Exception {
         when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
         this.mockMvc.perform(get("/api/account/1")
-                        .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(status().isOk());
@@ -50,10 +49,12 @@ public class AccountControllerTests extends BaseTests {
     @WithMockUser("spring")
     public void testCalculation() throws Exception {
         when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        when(transactionsRepository.findByTypeAndAccount_Id(TransanctionType.INCOME, account.getId())).thenReturn(income);
-        when(transactionsRepository.findByTypeAndAccount_Id(TransanctionType.EXPENCE, account.getId())).thenReturn(expences);
+        when(transactionsRepository.findByTypeAndAccount_Id(TransanctionType.INCOME, account.getId()))
+                .thenReturn(income);
+        when(transactionsRepository.findByTypeAndAccount_Id(TransanctionType.EXPENCE, account.getId()))
+                .thenReturn(expences);
         this.mockMvc.perform(get("/api/account/1")
-                        .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(status().isOk());
@@ -63,7 +64,7 @@ public class AccountControllerTests extends BaseTests {
     @WithMockUser("spring")
     public void testCreateAccount() throws Exception {
         this.mockMvc.perform(get("/api/account/_draft")
-                        .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(0))
                 .andExpect(status().isOk());
@@ -74,7 +75,7 @@ public class AccountControllerTests extends BaseTests {
     public void testGetAll() throws Exception {
         Page<Account> pagedResponse = new PageImpl<>(accounts);
         when(accountRepository.findAll(PageRequest.of(0, 100))).thenReturn(pagedResponse);
-        this.mockMvc.perform(get("/api/account"))
+        this.mockMvc.perform(get("/api/account").accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -84,9 +85,9 @@ public class AccountControllerTests extends BaseTests {
     public void testUpdate() throws Exception {
         when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
         this.mockMvc.perform(put("/api/account")
-                        .content(asJsonString(new AccountDTO()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .content(asJsonString(new AccountDTO()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
