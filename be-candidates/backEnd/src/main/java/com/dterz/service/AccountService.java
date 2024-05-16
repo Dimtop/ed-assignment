@@ -1,23 +1,27 @@
 package com.dterz.service;
 
-import com.dterz.dtos.AccountDTO;
-import com.dterz.mappers.AccountMapper;
-import com.dterz.model.Account;
-import com.dterz.model.Transaction;
-import com.dterz.model.TransanctionType;
-import com.dterz.model.User;
-import com.dterz.repositories.AccountRepository;
-import com.dterz.repositories.TransactionsRepository;
-import com.dterz.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.math.BigDecimal;
-import java.util.*;
+import com.dterz.dtos.AccountDTO;
+import com.dterz.mappers.AccountMapper;
+import com.dterz.model.Account;
+import com.dterz.model.User;
+import com.dterz.repositories.AccountRepository;
+import com.dterz.repositories.TransactionsRepository;
+import com.dterz.repositories.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
@@ -29,8 +33,6 @@ public class AccountService {
     private final AccountMapper mapper;
     private final UserRepository userRepository;
     private final TransactionsRepository transactionsRepository;
-
-    ArrayList<Transaction> accountTransactions = new ArrayList<Transaction>();
 
     /**
      * Gets all Accounts currently in the System.
@@ -52,7 +54,7 @@ public class AccountService {
         Map<String, Object> response = new HashMap<>();
         List<AccountDTO> accountDTOS = mapper.entityListToDTOList(acountList);
         for (AccountDTO accountDTO : accountDTOS) {
-            Calcbalance2(accountDTO, 0d);
+            calculateAccountBalance(accountDTO);
         }
         response.put("accounts", accountDTOS);
         response.put("currentPage", page.getNumber());
@@ -67,37 +69,15 @@ public class AccountService {
      * @param Logarsmos    the Account we need the Balance for
      * @param initialValue initial balance
      */
-    private void Calcbalance2(Object Logarsmos, Double initialValue) {
+    private void calculateAccountBalance(AccountDTO account) {
+
         final long start = System.currentTimeMillis();
-        Double zero = BigDecimal.ZERO.doubleValue();
-        List<Long> transaction = transactionsRepository.findAllIds();
 
-        int next = 0;
-        for (next = 0; next < transaction.size(); next++) {
-            transactionsRepository.findById(transaction.get(next)).get();
-            if (transactionsRepository.findById(transaction.get(next)).get().getAccount().getId() == ((AccountDTO) Logarsmos).getId())
-                accountTransactions.add(transactionsRepository.findById(transaction.get(next)).get());
-        }
-        for (int y = 0; y < accountTransactions.size(); y++) {
-            if (TransanctionType.INCOME.equals(accountTransactions.get(y).getType())) {
-                zero = zero + accountTransactions.get(y).getAmount().doubleValue();
-            }
-        }
-        for (int x = 0; x < accountTransactions.size(); x++)
-            if (TransanctionType.EXPENCE.equals(accountTransactions.get(x).getType())) {
-                zero = zero - accountTransactions.get(x).getAmount().doubleValue();
-            }
-        accountTransactions.sort(new Comparator<Transaction>() {
+        BigDecimal accountBalance = transactionsRepository.calculateAccountBalance(account.getId());
+        account.setCalculatedBalance(accountBalance);
 
-            @Override
-            public int compare(Transaction o1, Transaction o2) {
-                return o1.getDate().compareTo(o1.getDate());
-            }
-
-        });
-        ((AccountDTO) Logarsmos).setCalculatedBalance(BigDecimal.valueOf(zero));
-        accountTransactions.clear();
-        log.info("calcBalance took {} ms for Account {}", (System.currentTimeMillis() - start), ((AccountDTO) Logarsmos).getId());
+        log.info("calcBalance took {} ms for Account {}", (System.currentTimeMillis() - start),
+                account.getId());
     }
 
     /**
@@ -109,7 +89,7 @@ public class AccountService {
     public AccountDTO getAccountById(long accountId) {
         Account account = accountRepository.findById(accountId).orElse(null);
         AccountDTO accountDTO = mapper.entityToDto(account);
-        Calcbalance2(accountDTO, null);
+        calculateAccountBalance(accountDTO);
         return accountDTO;
     }
 
