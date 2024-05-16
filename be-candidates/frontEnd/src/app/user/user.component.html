@@ -11,6 +11,7 @@
         <label>Lastname: {{user.surName}}</label>
         <label *ngIf="user.superAdmin">Role: Admin</label>
         <label *ngIf="!user.superAdmin">Role: User</label>
+        <label>Age: {{user.age}}</label>
         <label>Comments: {{user.comments}}</label>
       </mat-card-subtitle>
     </mat-card-header>

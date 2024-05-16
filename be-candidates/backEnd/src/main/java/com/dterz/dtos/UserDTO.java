@@ -19,6 +19,8 @@ public class UserDTO {
 
     private String surName;
 
+    private Integer age;
+
     private String comments;
 
     @JsonProperty("superAdmin")

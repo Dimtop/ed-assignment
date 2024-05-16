@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {environment} from "../../environments/environment";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface User {
   id: string;
@@ -10,31 +10,31 @@ export interface User {
   pass: string;
   fistName: string;
   surName: string;
+  age: number;
   comments: string;
   superAdmin: boolean;
   permissions: any[];
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
-
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   public getAll() {
-    return this.httpClient.get(
-      environment.apiUrl + '/user', {
-        observe: 'response'
-      })
+    return this.httpClient.get(environment.apiUrl + '/user', {
+      observe: 'response',
+    });
   }
 
   getUserById(userId: any) {
-    return this.httpClient.get<User>(`${environment.apiUrl + '/user'}/${userId}`, {
-      observe: 'response'
-    })
+    return this.httpClient.get<User>(
+      `${environment.apiUrl + '/user'}/${userId}`,
+      {
+        observe: 'response',
+      }
+    );
   }
 
   updateUser(user: User): Observable<User> {
@@ -47,7 +47,7 @@ export class UserService {
 
   createDraftUser() {
     return this.httpClient.get<User>(`${environment.apiUrl + '/user/_draft'}`, {
-      observe: 'response'
-    })
+      observe: 'response',
+    });
   }
 }
