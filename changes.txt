@@ -1,3 +1,0 @@
-Installation and Exercise 1
-
-AccountController.java, line 25, accountService -> AccountService
