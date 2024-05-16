@@ -952,5 +952,12 @@
             VALUES (2, 'frontend', '1.2.1');
         </sql>
     </changeSet>
+    
+    <changeSet id="1645272976866-17" author="topalidis">
+        <sql>
+            ALTER TABLE client_user ADD age int; 
+            UPDATE client_user SET age = FLOOR(RAND()*(55-25)+25);
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

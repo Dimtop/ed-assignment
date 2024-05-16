@@ -51,7 +51,7 @@ public class BaseTests {
     InfoRepository infoRepository;
 
     Account account = new Account(1L, "testAccount", new Date(), new HashSet<>(), new ArrayList<>());
-    User user = new User(1L, "spring", "", "spring", "spring", "", true, new ArrayList<>(), new HashSet<>(),
+    User user = new User(1L, "spring", "", "spring", "spring", 31, "", true, new ArrayList<>(), new HashSet<>(),
             new HashSet<>());
     List<Transaction> income = new ArrayList<>();
     List<Transaction> expences = new ArrayList<>();
