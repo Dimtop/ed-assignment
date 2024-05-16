@@ -1,13 +1,15 @@
 package com.dterz.repositories;
 
-import com.dterz.model.Transaction;
-import com.dterz.model.TransanctionType;
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.dterz.model.Transaction;
+import com.dterz.model.TransanctionType;
 
 @Repository
 public interface TransactionsRepository extends GenericRepository<Transaction> {
@@ -22,7 +24,8 @@ public interface TransactionsRepository extends GenericRepository<Transaction> {
     Page<Transaction> findByUserId(long userId, Pageable pageRequest);
 
     /**
-     * Returns a Page of Transactions for an Account according to the criteria provided
+     * Returns a Page of Transactions for an Account according to the criteria
+     * provided
      *
      * @param accountId   the id of the Account
      * @param pageRequest sort and filter criteria for the requested Transactions
@@ -31,7 +34,8 @@ public interface TransactionsRepository extends GenericRepository<Transaction> {
     Page<Transaction> findByAccountId(long accountId, Pageable pageRequest);
 
     /**
-     * Returns a Page of Transactions for an User according to the criteria provided filtered by Description
+     * Returns a Page of Transactions for an User according to the criteria provided
+     * filtered by Description
      *
      * @param userId      the id of the User
      * @param description the input for filtering the Transactions by description
@@ -56,5 +60,7 @@ public interface TransactionsRepository extends GenericRepository<Transaction> {
      */
     @Query("SELECT id from Transaction")
     List<Long> findAllIds();
-}
 
+    @Query(value = "SELECT SUM(CASE WHEN type = 1 THEN amount ELSE -amount END) FROM Transaction WHERE account_id = ?1", nativeQuery = true)
+    BigDecimal calculateAccountBalance(long accountId);
+}
