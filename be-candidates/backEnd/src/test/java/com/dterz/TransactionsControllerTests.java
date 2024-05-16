@@ -50,9 +50,9 @@ public class TransactionsControllerTests extends BaseTests {
         when(userRepository.findByUserName("spring")).thenReturn(user);
         when(accountRepository.findByDescription("testAccount")).thenReturn(account);
         this.mockMvc.perform(put("/api/transactions/")
-                        .content(asJsonString(transactionDTO))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .content(asJsonString(transactionDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.amount").value(999))
                 .andExpect(status().isOk());
@@ -63,7 +63,7 @@ public class TransactionsControllerTests extends BaseTests {
     public void testGetById() throws Exception {
         when(transactionsRepository.findById(2L)).thenReturn(Optional.of(t2));
         this.mockMvc.perform(get("/api/transactions/2")
-                        .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.amount").value(BigDecimal.valueOf(75)))
@@ -78,10 +78,11 @@ public class TransactionsControllerTests extends BaseTests {
         all.addAll(expences);
         Page<Transaction> pagedResponse = new PageImpl<>(all);
         when(userRepository.findByUserName(user.getUserName())).thenReturn(user);
-        when(transactionsRepository.findByUserId(user.getId(), PageRequest.of(0, 5, Sort.by("date").ascending()))).thenReturn(pagedResponse);
+        when(transactionsRepository.findByUserId(user.getId(), PageRequest.of(0, 5, Sort.by("date").ascending())))
+                .thenReturn(pagedResponse);
         this.mockMvc.perform(get("/api/transactions/getAllForUser/")
-                        .param("userID", user.getUserName())
-                )
+                .param("userID", user.getUserName())
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(1))
@@ -96,11 +97,12 @@ public class TransactionsControllerTests extends BaseTests {
         all.addAll(expences);
         Page<Transaction> pagedResponse = new PageImpl<>(all);
         when(userRepository.findByUserName(user.getUserName())).thenReturn(user);
-        when(transactionsRepository.findByUserIdAndDescriptionContaining(user.getId(), "description", PageRequest.of(0, 5, Sort.by("date").ascending()))).thenReturn(pagedResponse);
+        when(transactionsRepository.findByUserIdAndDescriptionContaining(user.getId(), "description",
+                PageRequest.of(0, 5, Sort.by("date").ascending()))).thenReturn(pagedResponse);
         this.mockMvc.perform(get("/api/transactions/getAllForUser/")
-                        .param("userID", user.getUserName())
-                        .param("description", "description")
-                )
+                .param("userID", user.getUserName())
+                .param("description", "description")
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(1))
@@ -114,10 +116,10 @@ public class TransactionsControllerTests extends BaseTests {
         all.addAll(income);
         all.addAll(expences);
         Page<Transaction> pagedResponse = new PageImpl<>(all);
-        when(transactionsRepository.findByAccountId(1L, PageRequest.of(0, 5, Sort.by("date").ascending()))).thenReturn(pagedResponse);
+        when(transactionsRepository.findByAccountId(1L, PageRequest.of(0, 5, Sort.by("date").ascending())))
+                .thenReturn(pagedResponse);
         this.mockMvc.perform(get("/api/transactions/getAllForAccount/")
-                        .param("accountId", "1")
-                )
+                .param("accountId", "1"))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalItems").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(1))

@@ -70,7 +70,8 @@ public class TransactionsController {
     }
 
     /**
-     * Gets a List of Transaction for a given User according to some sort and filter criteria
+     * Gets a List of Transaction for a given User according to some sort and filter
+     * criteria
      *
      * @param sort        the attribute the list will be sorted by
      * @param direction   the sort direction selected
@@ -83,18 +84,20 @@ public class TransactionsController {
      */
     @GetMapping("getAllForUser")
     public ResponseEntity<?> getAllFiltered(@RequestParam(name = "sort", defaultValue = "date") String sort,
-                                            @RequestParam(name = "direction", defaultValue = "asc") String direction,
-                                            @RequestParam(name = "page", defaultValue = "0") int page,
-                                            @RequestParam(name = "size", defaultValue = "5") int size,
-                                            @RequestParam(name = "description", defaultValue = "") String description,
-                                            @RequestParam(name = "type", defaultValue = "") String type,
-                                            @RequestParam(name = "userID", defaultValue = "") String userID) {
-        PageRequest pageRequest = PageRequest.of(page, size, direction.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
+            @RequestParam(name = "direction", defaultValue = "asc") String direction,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size,
+            @RequestParam(name = "description", defaultValue = "") String description,
+            @RequestParam(name = "type", defaultValue = "") String type,
+            @RequestParam(name = "userID", defaultValue = "") String userID) {
+        PageRequest pageRequest = PageRequest.of(page, size,
+                direction.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
         return ResponseEntity.ok(transactionsService.getAllForUser(pageRequest, userID, description));
     }
 
     /**
-     * Gets a List of Transaction for a given Account according to some sort and filter criteria
+     * Gets a List of Transaction for a given Account according to some sort and
+     * filter criteria
      *
      * @param sort      the attribute the list will be sorted by
      * @param direction the sort direction selected
@@ -103,13 +106,14 @@ public class TransactionsController {
      * @param accountId the id of the Account to filter the transactions by
      * @return ResponseEntity<Map < String, Object>>
      */
-    @GetMapping("getAllForAccount")
+    @GetMapping(value = "getAllForAccount", produces = { "application/json", "text/csv" })
     public ResponseEntity<?> getAllForAccount(@RequestParam(name = "sort", defaultValue = "date") String sort,
-                                              @RequestParam(name = "direction", defaultValue = "asc") String direction,
-                                              @RequestParam(name = "page", defaultValue = "0") int page,
-                                              @RequestParam(name = "size", defaultValue = "5") int size,
-                                              @RequestParam(name = "accountId", defaultValue = "") String accountId) {
-        PageRequest pageRequest = PageRequest.of(page, size, direction.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
+            @RequestParam(name = "direction", defaultValue = "asc") String direction,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size,
+            @RequestParam(name = "accountId", defaultValue = "") String accountId) {
+        PageRequest pageRequest = PageRequest.of(page, size,
+                direction.equals("asc") ? Sort.by(sort).ascending() : Sort.by(sort).descending());
         return ResponseEntity.ok(transactionsService.getAllForAccount(pageRequest, accountId));
     }
 }
